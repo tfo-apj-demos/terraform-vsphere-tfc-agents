@@ -16,7 +16,7 @@ resource "tfe_agent_token" "this" {
 }
 
 module "vm" {
-  count = 3
+  count = var.agent_count
 
   source  = "app.terraform.io/tfo-apj-demos/virtual-machine/vsphere"
   version = "~> 1.3"
@@ -25,7 +25,7 @@ module "vm" {
   datacenter        = "Datacenter"
   cluster           = "cluster"
   primary_datastore = "vsanDatastore"
-  folder_path       = "demo workloads"
+  folder_path       = "management"
   networks = {
     "seg-general" : "dhcp"
   }
@@ -35,4 +35,7 @@ module "vm" {
     agent_token = tfe_agent_token.this.token
     agent_name  = "tfc-agent-${count.index}"
   })
+  tags = {
+    "application" = "tfc-agent"
+  }
 }
