@@ -1,6 +1,6 @@
 resource "tfe_agent_pool" "this" {
-  name                = "vsphere_agent_pool"
-  organization_scoped = false
+  name                = "gcve_agent_pool"
+  organization_scoped = true
 }
 
 resource "tfe_agent_token" "this" {
