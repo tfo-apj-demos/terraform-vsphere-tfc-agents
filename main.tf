@@ -34,7 +34,7 @@ module "vm" {
   userdata = templatefile("${path.module}/templates/userdata.yaml.tmpl", {
     agent_token = tfe_agent_token.this.token
     agent_name  = "tfc-agent-${count.index}"
-    krb5_conf = templatefile("${path.module}/templates/krb5.conf.tmpl", {})
+    krb5_conf = base64encode(templatefile("${path.module}/templates/krb5.conf.tmpl", {}))
   })
   tags = {
     "application" = "tfc-agent"
