@@ -1,5 +1,5 @@
 [libdefaults]
-  default_realm = HASHICORP.LOCAL
+  default_realm = hashicorp.local
   default_tkt_enctypes = aes256-cts aes256-cts-hmac-sha1-96
   default_tgs_enctypes = aes256-cts aes256-cts-hmac-sha1-96
   dns_lookup_kdc = true
@@ -10,12 +10,12 @@
     kdc = dc-0.hashicorp.local
     admin_server = dc-0.hashicorp.local
     master_kdc = dc-0.hashicorp.local
-    default_domain = HASHICORP.LOCAL
+    default_domain = hashicorp.local
   }
 
 [domain_realm]
-  hashicorp.local = HASHICORP.LOCAL
-  .hashicorp.local = HASHICORP.LOCAL
+  HASHICORP.LOCAL = hashicorp.local
+  .HASHICORP.LOCAL = hashicorp.local
 
 [capaths]
 
