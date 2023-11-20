@@ -8,6 +8,16 @@ terraform {
       source = "hashicorp/vsphere"
       version = "~> 2.5"
     }
+    nsxt = {
+      source  = "vmware/nsxt"
+      version = "~> 3.4"
+    }
+  }
+  cloud {
+    organization = "tfo-apj-demos"
+    workspaces {
+      name = "vsphere-tfc-agents"
+    }
   }
 }
 
