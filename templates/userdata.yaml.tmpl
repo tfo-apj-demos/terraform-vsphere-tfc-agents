@@ -2,12 +2,11 @@
 packages:
   - docker-ce
 write_files:
-  - content: |
-    ${krb5_conf}
-  encoding: base64
-  owner: root:root
-  path: /etc/krb5.conf
-  permissions: '0644'
+  - path: /etc/krb5.conf
+    encoding: base64
+    permissions: '0644'
+    content: |
+      ${krb5_conf}
 
 runcmd:
   - docker pull hashicorp/tfc-agent:latest
