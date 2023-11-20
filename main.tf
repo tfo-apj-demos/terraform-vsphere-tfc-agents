@@ -1,5 +1,5 @@
 data "hcp_packer_image" "this" {
-  bucket_name     = "base-ubuntu-2204"
+  bucket_name     = "docker-ubuntu-2204"
   channel         = "latest"
   cloud_provider  = "vsphere"
   region          = "Datacenter"
