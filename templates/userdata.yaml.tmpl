@@ -1,6 +1,35 @@
 #cloud-config
 packages:
   - docker-ce
+write_files:
+  - content: |
+    [libdefaults]
+    default_realm = hashicorp.local
+    default_tkt_enctypes = des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5
+    default_tgs_enctypes = des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5
+    dns_lookup_kdc = true
+    dns_lookup_realm = true
+
+[realms]
+    hashicorp.local = {
+        kdc = dc-0.hashicorp.local
+        admin_server = dc-0.hashicorp.local
+        master_kdc = dc-0.hashicorp.local
+        default_domain = hashicorp.local
+    }
+
+[domain_realm]
+    .hashicorp.local = hashicorp.local
+
+[capaths]
+
+[logging]
+    kdc = SYSLOG:INFO
+    admin_server = FILE=/var/log/kadm5.log
+  owner: root:root
+  path: /etc/krb5.conf
+  permissions: '0644'
+
 runcmd:
   - docker pull hashicorp/tfc-agent:latest
-  - docker run -e TFC_AGENT_TOKEN=${agent_token} -e TFC_AGENT_NAME=${agent_name} --restart always hashicorp/tfc-agent
+  - docker run -e TFC_AGENT_TOKEN=${agent_token} -e TFC_AGENT_NAME=${agent_name} --mount type=bind,source=/etc/krb5.conf,target=/etc/krb5.conf --restart always hashicorp/tfc-agent
