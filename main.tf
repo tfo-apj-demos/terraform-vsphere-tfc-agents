@@ -15,6 +15,15 @@ resource "tfe_agent_token" "this" {
   description   = "agent token for vsphere environment"
 }
 
+data "nsxt_policy_ip_pool" "this" {
+  display_name = "10 - gcve-foundations"
+}
+resource "nsxt_policy_ip_address_allocation" "this" {
+  count        = var.agent_count
+  display_name = "tfc-agent-${count.index}"
+  pool_path    = data.nsxt_policy_ip_pool.this.path
+}
+
 module "vm" {
   count = var.agent_count
 
@@ -27,8 +36,14 @@ module "vm" {
   primary_datastore = "vsanDatastore"
   folder_path       = "management"
   networks = {
-    "seg-general" : "dhcp"
+    "seg-general" : "${nsxt_policy_ip_address_allocation.this[count.index].allocation_ip}/22"
   }
+  dns_server_list = [
+    "172.21.15.150"
+  ]
+  gateway         = "172.21.12.1"
+  dns_suffix_list = ["hashicorp.local"]
+
   template = data.hcp_packer_image.this.cloud_image_id
 
   userdata = templatefile("${path.module}/templates/userdata.yaml.tmpl", {
