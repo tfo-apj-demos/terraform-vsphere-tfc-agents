@@ -3,29 +3,8 @@ packages:
   - docker-ce
 write_files:
   - content: |
-    [libdefaults]
-    default_realm = hashicorp.local
-    default_tkt_enctypes = des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5
-    default_tgs_enctypes = des3-hmac-sha1 des-cbc-crc des-cbc-md4 des-cbc-md5
-    dns_lookup_kdc = true
-    dns_lookup_realm = true
-
-[realms]
-    hashicorp.local = {
-        kdc = dc-0.hashicorp.local
-        admin_server = dc-0.hashicorp.local
-        master_kdc = dc-0.hashicorp.local
-        default_domain = hashicorp.local
-    }
-
-[domain_realm]
-    .hashicorp.local = hashicorp.local
-
-[capaths]
-
-[logging]
-    kdc = SYSLOG:INFO
-    admin_server = FILE=/var/log/kadm5.log
+    ${krb5_conf}
+  encoding: base64
   owner: root:root
   path: /etc/krb5.conf
   permissions: '0644'
